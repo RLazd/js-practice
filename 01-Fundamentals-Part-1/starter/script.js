@@ -174,4 +174,62 @@ Boolean Logic
 
 
 Logical Operators
+
+Switch operators
+    switch (day) {
+        case 'monday': // day === 'monday' STRICT
+            console.log('Plan course structure');
+            console.log('Go to coding meetup');
+        //break; => if break is commented-> code continue to execute until next break !
+        case 'tuesday':
+            console.log('Prepare theory videos');
+            break;
+        case 'wednesday':
+        case 'thursday':
+            console.log('Write code examples');
+            break;
+        case 'friday':
+            console.log('Record videos');
+            break;
+        case 'saturday':
+        case 'sunday':
+            console.log('Enjoy the weekend :D');
+            break;
+        default:
+            console.log('Not a valid day!');
+    }
+
+Statements and expressions!
+    Expressions - piece of code that produces values => ex: 3+5 or 1971 or true && false => they produce value
+
+    Statement - bigger piece of statement that does not produce value itself.
+        if (23>10) const= '23 is bigger';    // ==> it does not produce value, just declare a value, but string itself is expression
+
+    JS expect expressions and statments in different places. Ex: Template literal expects expressions!!!
+
+The conditional (Ternary) operator
+    const age = 23;
+    age >= 18 ? console.log('valid drinking age') : console.log('INvalid drinking age');
+    const drink = age >= 21 ? 'wine' : 'nothing';
+
+    console.log(`I like to drink ${age >= 21 ? 'wine' : 'nothing'}`);
+
+
+JS Release
+    ES5
+    ES6+ = ES2015 (the biggest update!!!)
+    ESNext
+
+    Backwards compatibility : modernJS works also for 1997 (old features never removed; websites keep working forever!) => there are old things and bugs..though
+    Forward compatibility: nop...!
+
+    Modern JS:
+        use latest Google Chrome
+        during production: use Babel to transpile and polyfill your code (converting back to ES5 to ensure browser compatibility for all users )
+        
+        ES5 - ready to use in all browsers
+        es6+ (es6 --> es2020) - supported in all modern browsers
+
+        ES2021 ESNewxt  : future versions of the language (can already use some features in prd with transpiling and polyfilling)
 */
+
