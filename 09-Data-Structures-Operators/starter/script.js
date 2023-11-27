@@ -1,4 +1,62 @@
 'use strict';
+
+// Data needed for first part of the section
+const weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+const openingHours = {
+  [weekdays[3]]: {
+    open: 12,
+    close: 22,
+  },
+  [weekdays[4]]: {
+    open: 11,
+    close: 23,
+  },
+  [weekdays[5]]: {
+    open: 0, // Open 24 hours
+    close: 24,
+  },
+};
+
+const restaurant = {
+  //this is object literal (using {})
+  name: 'Classico Italiano',
+  location: 'Via Angelo Tavanti 23, Firenze, Italy',
+  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
+  mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+  //before ES6
+  //openingHours: openingHours,
+  //ES6 enhanced obj literals
+  openingHours,
+  //ES6 syntax for methods -> no need for ': function '
+  order(starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+
+  orderDelivery: function ({
+    starterIndex = 1,
+    mainIndex = 0,
+    time = '20:00',
+    address,
+  }) {
+    //destructuring as an argument
+    console.log(
+      `Order recieved! ${this.starterMenu[starterIndex]}, ${this.mainMenu[mainIndex]}
+      will be delivered ${time} at ${address}`
+    );
+  },
+
+  orderPasta: function (ing1, ing2, ing3) {
+    console.log(
+      `Here is your delicious pasta with ${ing1}, ${ing2} and ${ing3}!`
+    );
+  },
+
+  orderPizza: function (mainIngredient, ...otherIngredients) {
+    console.log(mainIngredient);
+    console.log(otherIngredients);
+  },
+};
 /*
 //ARRAY DESTRUCTURING
 const arr = [2, 3, 4];
@@ -271,60 +329,6 @@ printGoals(...game.scored);
 team1 > team2 && console.log('More likely to win: ', game.team1);
 team2 > team1 && console.log('More likely to win: ', game.team2);
 
-*/
-
-// Data needed for first part of the section
-const restaurant = {
-  name: 'Classico Italiano',
-  location: 'Via Angelo Tavanti 23, Firenze, Italy',
-  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
-  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
-  mainMenu: ['Pizza', 'Pasta', 'Risotto'],
-
-  openingHours: {
-    thu: {
-      open: 12,
-      close: 22,
-    },
-    fri: {
-      open: 11,
-      close: 23,
-    },
-    sat: {
-      open: 0, // Open 24 hours
-      close: 24,
-    },
-  },
-
-  order: function (starterIndex, mainIndex) {
-    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
-  },
-
-  orderDelivery: function ({
-    starterIndex = 1,
-    mainIndex = 0,
-    time = '20:00',
-    address,
-  }) {
-    //destructuring as an argument
-    console.log(
-      `Order recieved! ${this.starterMenu[starterIndex]}, ${this.mainMenu[mainIndex]}
-      will be delivered ${time} at ${address}`
-    );
-  },
-
-  orderPasta: function (ing1, ing2, ing3) {
-    console.log(
-      `Here is your delicious pasta with ${ing1}, ${ing2} and ${ing3}!`
-    );
-  },
-
-  orderPizza: function (mainIngredient, ...otherIngredients) {
-    console.log(mainIngredient);
-    console.log(otherIngredients);
-  },
-};
-
 //FOR-OF LOOP
 const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
 for (const item of menu) console.log(item);
@@ -335,8 +339,218 @@ for (const [i, el] of menu.entries()) {
 console.log(menu.entries()); //Array Iterator {}
 console.log(...menu.entries()); // [0, 'Pizza'], [1, 'Pasta'] etc
 
-//ENHANCED OBJECT LITERALS
+//ENHANCED OBJECT LITERALS - objects & methods & property names (compute)
+console.log(restaurant.openingHours);
+
+//OPTIONAL CHAINING ?. => if certain prop does not exist -> returns undefined immediately
+if (restaurant.openingHours && restaurant.openingHours.mon)
+  console.log(restaurant.openingHours.mon.open); //if mon -> undefined; if mon.open -> error
+console.log(restaurant.openingHours.mon?.open); // undefined
+console.log(restaurant.openingHours?.mon?.open);
+//Ex
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+for (const day of days) {
+  console.log(day);
+  const open = restaurant.openingHours[day]?.open ?? 'closed'; //nullish operator
+  console.log(`On ${day} we open at ${open}`);
+}
+//Methods
+console.log(restaurant.order?.(0, 1) ?? 'Method does not exist'); //call if exists
+console.log(restaurant.orderRisotto?.(0, 1) ?? 'Method does not exist'); //call if exists
+//Arrays
+const user = [{ name: 'Ram', email: ' hello@gmail.com' }];
+console.log(user[0]?.name ?? ' User array is empty');
+
+//LOOPING OBJECTS: Obj Keys, Values, Entries
+//property NAMES
+const properties = Object.keys(openingHours);
+console.log(properties);
+let openStr = `We are open ${properties.length} days a week- `;
+for (const day of Object.keys(openingHours)) {
+  openStr += `${day},`;
+}
+console.log(openStr);
+//property VALUES
+const values = Object.values(openingHours);
+console.log(values);
+//ENTRIES - names+values
+const entries = Object.entries(openingHours);
+console.log(entries);
+for (const [key, { open, close }] of entries) {
+  console.log(`On ${key} we open at ${open} and close at ${close}`);
+}
+
+
+//1. =>entries method (array.entries())
+for (let [i, el] of game.scored.entries()) {
+  console.log(`Game ${i + 1} : ${el}`);
+}
+//2.=> count average of Object.values();
+const odds = Object.values(game.odds);
+let sumOfOdds = 0;
+const count = odds.length;
+for (const odd of odds) {
+  sumOfOdds += odd;
+}
+console.log(sumOfOdds / count);
+//3. Object.entries(object)
+for (const [team, odd] of Object.entries(game.odds)) {
+  let teamName = game?.[team] ?? 'draw';
+  console.log(`Odd of ${teamName} : ${odd}`);
+}
+//4.=>
+const scorers = {};
+for (let scorer of game.scored) {
+  scorers[scorer] ? scorers[scorer]++ : (scorers[scorer] = 1);
+}
+console.log(scorers);
+
+//SETS - a collection of unique values, no indexes. (.size, .has(), .add(), .delete(), .clear(), [ ...new Set(array)])
+const ordersSet = new Set(['Pasta', 'Pizza', 'Pizza', 'Risotto', 'Pasta']);
+console.log(ordersSet);
+console.log(new Set('Jonas')); //=> {'J', 'o', 'n', 'a', 's'}
+console.log(ordersSet.size);
+console.log(ordersSet.has('Pasta'));
+console.log(ordersSet.has('Bread'));
+ordersSet.add('Garlic Bread');
+ordersSet.delete('Garlic Bread');
+//ordersSet.clear();
+for (const order of ordersSet) console.log(order);
+const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter'];
+const staffUnique = [...new Set(staff)];
+console.log(new Set('Ramona').size);
+
+//MAPS - key:value pairs (keys can be of any type (unlike objects where keys are usually strings))
+// .set() .get() .delete() .size .clear
+const rest = new Map();
+rest.set('name', 'Classico Italiano');
+rest.set(1, 'Firenze, Italy');
+rest.set(2, 'Lisbon, Portugal');
+rest
+  .set('categories', ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'])
+  .set('open', 11)
+  .set('close', 23)
+  .set(true, 'We are open')
+  .set(false, 'We are closed');
+console.log(rest.get('name'));
+console.log(rest.get(true));
+console.log(rest.get(1));
+const time = 21;
+console.log(rest.get(time > rest.get('open') && time < rest.get('close')));
+console.log(rest.has('categories'));
+rest.delete(2);
+console.log(rest.size); //7
+//rest.clear();
+rest.set([1, 2], 'Test');
+console.log(rest);
+console.log(rest.get([1, 2])); //undefined , cus [1,2] != [1,2] in the heap !!!!
+const arr = [1, 2];
+rest.set(arr, 'Test');
+console.log(rest.get(arr));
+rest.set(document.querySelector('h1'), 'Heading');
+
+const question = new Map([
+  ['question', 'what is the best programming language in the world?'],
+  [1, 'C'],
+  [2, 'Java'],
+  [3, 'JS'],
+  ['correct', 3],
+  [true, 'Correct!'],
+  [false, 'Try again!'],
+]);
+console.log(question);
+//convert Obj to Map
+console.log(Object.entries(openingHours));
+const hoursMap = new Map(Object.entries(openingHours));
+console.log(hoursMap);
+
+//iteration in Maps
+console.log(question.get('question'));
+for (const [key, value] of question) {
+  if (typeof key === 'number') {
+    console.log(`Answer ${key} : ${value}`);
+  }
+}
+//let answer = Number(prompt('Your answer'));
+let answer = 0;
+console.log(question.get(answer === question.get('correct')));
+
+//convert Map to Array
+console.log(...question);
+//console.log(question.entries());
+console.log([...question.keys()]);
+console.log([...question.values()]);
+
+//Simple list- array, sets
+//Key/Value pairs - Objects or maps
+
+//Challange 3
+const gameEvents = new Map([
+  [17, '⚽️ GOAL'],
+  [36, '🔁 Substitution'],
+  [47, '⚽️ GOAL'],
+  [61, '🔁 Substitution'],
+  [64, '🔶 Yellow card'],
+  [69, '🔴 Red card'],
+  [70, '🔁 Substitution'],
+  [72, '🔁 Substitution'],
+  [76, '⚽️ GOAL'],
+  [80, '⚽️ GOAL'],
+  [92, '🔶 Yellow card'],
+]);
+
+//1.
+const events = [...new Set(gameEvents.values())];
+console.log(events);
+//2.
+gameEvents.delete(64);
+console.log(gameEvents);
+//3.
+const timeOfGame = [...gameEvents.keys()].pop();
+console.log(
+  `An event happened on average every ${timeOfGame / gameEvents.size} minutes`
+);
+//4.
+for (const [key, value] of gameEvents) {
+  console.log(`${key <= 45 ? 'FIRST HALF' : 'SECOND HALF'} : ${key} ${value}`);
+}
+
+
+*/
 
 // Data needed for a later exercise
 const flights =
   '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+
+//STRINGS
+const airline = 'TAP Air Portugal';
+const plane = 'A320';
+console.log(plane[0]);
+console.log('B373'[1]);
+console.log(airline.length);
+//Methods -indexOf(), lastIndexOf(), slice(),
+//Boxing - js takes every string (primitive type) and makes an string object from it=> then you can call methods on a string
+console.log(new String('Ram'));
+console.log(typeof new String('Ram').slice(1));
+
+console.log(airline.indexOf('r'));
+console.log(airline.lastIndexOf('r'));
+console.log(airline.indexOf('Portugal')); //8
+console.log(airline.slice(4, 7)); //Air = substring (end value not included)
+console.log(airline.slice(0, airline.indexOf(' '))); //TAP
+console.log(airline.slice(airline.lastIndexOf(' ') + 1)); //Last word, +1 to not include space
+console.log(airline.slice(-2)); //from end
+console.log(airline.slice(1, -1)); //AP Air Portuga
+
+const checkMiddleSeat = function (seat) {
+  //B and E are middle
+  const s = seat.slice(-1);
+  if (s === 'B' || s === 'E') {
+    console.log('You ve got middle seat');
+  } else {
+    console.log('You got lucky!');
+  }
+};
+checkMiddleSeat('11B');
+checkMiddleSeat('23C');
+checkMiddleSeat('3E');
