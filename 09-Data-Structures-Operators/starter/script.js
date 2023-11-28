@@ -91,8 +91,6 @@ console.log(i, j, k);
 const [p = 1, q = 1, r = 1] = [8, 9];
 console.log(p, q, r);
 
-
-
 //DESTRUCTURING OBJECTS
 restaurant.orderDelivery({
   time: '22:30',
@@ -133,7 +131,6 @@ const {
 } = openingHours;
 console.log(o, c);
 
-
 //SPREAD OPERATOR - works on all iterables (arrays, string, ) BUT NOT ON OBJECTS(it is not iterable)
 const arr = [7, 8, 9];
 const badNewArr = [1, 2, arr[0], arr[1], arr[2]];
@@ -173,7 +170,6 @@ restaurantCopy.name = 'Ristorante Roma';
 console.log(restaurant.name);
 console.log(restaurantCopy.name);
 
-
 //REST PATERNS and PARAMETERS
 // pack into another array; always have to be last in destructuring
 //1)Destructuring rest pattern
@@ -206,7 +202,6 @@ add(...x);
 restaurant.orderPizza('mushrooms', 'onion', 'olives', 'spinach');
 restaurant.orderPizza('mushrooms');
 
-
 //SHORT CIRCUITING -> && and ||
 //Use any data type
 //Can return any data type
@@ -233,7 +228,6 @@ if (restaurant.orderPizza) {
 }
 restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach'); //if .orderPizza is falsy => it doesnt evn evaluate second statement
 
-
 //NULLISH COALESCING OPERATOR
 restaurant.numGuests = 0;
 // Nullish: null and undefined (NOT 0 or '')
@@ -255,7 +249,7 @@ const rest2 = {
 // nullish assignment operator (null or undefined)
 rest1.numGuests ??= 10;
 rest2.numGuests ??= 10;
-// AND assignment operator = assign a value to variable if current value is truthy 
+// AND assignment operator = assign a value to variable if current value is truthy
 // rest1.owner = rest1.owner && '<ANONYMOUS>';
 // rest2.owner = rest2.owner && '<ANONYMOUS>';
 rest1.owner &&= '<ANONYMOUS>';
@@ -379,7 +373,6 @@ console.log(entries);
 for (const [key, { open, close }] of entries) {
   console.log(`On ${key} we open at ${open} and close at ${close}`);
 }
-
 
 //1. =>entries method (array.entries())
 for (let [i, el] of game.scored.entries()) {
@@ -515,20 +508,13 @@ for (const [key, value] of gameEvents) {
   console.log(`${key <= 45 ? 'FIRST HALF' : 'SECOND HALF'} : ${key} ${value}`);
 }
 
-
-*/
-
-// Data needed for a later exercise
-const flights =
-  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
-
 //STRINGS
 const airline = 'TAP Air Portugal';
 const plane = 'A320';
 console.log(plane[0]);
 console.log('B373'[1]);
 console.log(airline.length);
-//Methods -indexOf(), lastIndexOf(), slice(),
+//Methods -indexOf(), lastIndexOf(), slice(), toUpper/LowerCase(), trim(), replaceAll(), split(), join(), padStart()
 //Boxing - js takes every string (primitive type) and makes an string object from it=> then you can call methods on a string
 console.log(new String('Ram'));
 console.log(typeof new String('Ram').slice(1));
@@ -554,3 +540,130 @@ const checkMiddleSeat = function (seat) {
 checkMiddleSeat('11B');
 checkMiddleSeat('23C');
 checkMiddleSeat('3E');
+
+console.log(airline.toLowerCase());
+console.log(airline.toUpperCase());
+const passenger = 'jOnAS';
+const passengerLower = passenger.toLowerCase();
+const passengerCorrect =
+  passengerLower[0].toLocaleUpperCase() + passengerLower.slice(1);
+console.log(passengerCorrect);
+//Comparing email
+const email = 'hello@jonas.io';
+const loginEmail = '  Hello@Jonas.Io \n';
+const normalizedEmail = loginEmail.toLowerCase().trim();
+//Replacing
+const priceGB = '288,97EUR';
+const priceUS = priceGB.replace('EUR', '$').replace(',', '.');
+console.log(priceUS);
+const announcement =
+  'All passangers come to boarding door 23. Boarding door 23!';
+console.log(announcement.replaceAll('door', 'gate'));
+console.log(announcement.replace(/door/g, 'gate')); //regex
+//Booleans
+const plane2 = 'A320neo';
+console.log(plane2.includes('A320'));
+console.log(plane2.startsWith('Air'));
+if (plane2.startsWith('A320') && plane2.endsWith('neo')) {
+  console.log('Part of new airbus family!');
+}
+//Practice
+const checkBaggage = function (items) {
+  const baggage = items.toLowerCase();
+  if (baggage.includes('knife') || baggage.includes('gun')) {
+    console.log('You are not allowen on board');
+  } else {
+    console.log('Welcome aboard!');
+  }
+};
+checkBaggage('A have a laptop, food, posket kNife');
+checkBaggage('A have an umbrella, socks and camera');
+
+//Split and join
+console.log('A+very+nice+string'.split('+'));
+console.log('Jonas Schemd'.split(' '));
+const [firstName, lastName] = 'Jonas Schemd'.split(' ');
+const newName = ['Mr.', firstName, lastName.toUpperCase()].join('-');
+console.log(newName);
+const passenger2 = 'jessica and smith davis';
+const capitalizeName = function (name) {
+  const names = name.split(' ');
+  const namesUpper = [];
+  for (const n of names) {
+    //namesUpper.push(n[0].toUpperCase() + n.slice(1));
+    namesUpper.push(n.replace(n[0], n[0].toUpperCase()));
+  }
+  console.log(namesUpper.join(' '));
+};
+capitalizeName('jessica and smith davis');
+//Padding
+const message = 'Go to gate 23!';
+console.log(message.padStart(25, '+')); //25 -> how long string should be
+console.log(message.padStart(25, '+').padEnd(35, '+'));
+const maskCreditCard = function (number) {
+  const str = number + '';
+  const last = str.slice(-4);
+  return last.padStart(str.length, '*');
+};
+console.log(maskCreditCard(247124645));
+//Repeat
+const message2 = 'Bad weather...All departures delayed';
+console.log(message2.repeat(5));
+
+//Practice4
+document.body.append(document.createElement('textarea'));
+document.body.append(document.createElement('button'));
+document.querySelector('button').addEventListener('click', function () {
+  const text = document.querySelector('textarea').value;
+  console.log(text);
+  // const splittedText = text.split('\n');
+  // console.log(splittedText);
+  // let finalString = '';
+  // for (const [i, el] of splittedText.entries()) {
+  //   //console.log(el);
+  //   let elSplitted = el.toLowerCase().trim().split('_');
+  //   //console.log(elSplitted);
+  //   let camelCase = [];
+  //   for (const [i, word] of elSplitted.entries()) {
+  //     if (i === 0) {
+  //       camelCase.push(word);
+  //     } else {
+  //       camelCase.push(word[0].toUpperCase() + word.slice(1));
+  //     }
+  //   }
+  //   finalString += camelCase.join('').padEnd(17) + '✅'.repeat(i) + '\n';
+  // }
+  // console.log(finalString);
+  //Jonas way:
+  const rows = text.split('\n');
+  for (const [i, row] of rows.entries()) {
+    const [first, second] = row.toLowerCase().trim().split('_');
+    const output =
+      `${first}${second.replace(second[0], second[0].toUpperCase())}`.padEnd(
+        17
+      ) + '✅'.repeat(i + 1);
+    console.log(output);
+  }
+});
+
+const flights =
+  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+// 🔴 Delayed Departure from FAO to TXL (11h25)
+//              Arrival from BRU to FAO (11h45)
+//   🔴 Delayed Arrival from HEL to FAO (12h05)
+//            Departure from FAO to LIS (12h30)
+
+const getCode = str => str.slice(0, 3).toUpperCase();
+
+for (const flight of flights.split('+')) {
+  const [type, from, to, time] = flight.split(';');
+  const output = `${type.startsWith('_Delayed') ? '🔴' : ''}${type.replaceAll(
+    '_',
+    ' '
+  )} from ${getCode(from)} to ${getCode(to)} (${time.replace(
+    ':',
+    'h'
+  )})`.padStart(50);
+  console.log(output);
+};
+*/
