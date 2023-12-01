@@ -145,26 +145,7 @@ console.log(addTaxRate(0.23)(100));
 const addVAT2 = addTaxRate.bind(0.23);
 console.log(addVAT2(100));
 
-//Challenge4
-// Coding Challenge #1
-
-/* 
-Let's build a simple poll app!
-
-A poll has a question, an array of options from which people can choose, and an array with the number of replies for each option. This data is stored in the starter object below.
-
-
-
-HINT: Use many of the tools you learned about in this and the last section 😉
-
-BONUS: Use the 'displayResults' method to display the 2 arrays in the test data. Use both the 'array' and the 'string' option. Do NOT put the arrays in the poll object! So what shoud the this keyword look like in this situation?
-
-BONUS TEST DATA 1: [5, 2, 3]
-BONUS TEST DATA 2: [1, 5, 3, 9, 6, 1]
-
-GOOD LUCK 😀
-*/
-
+//Challenge1
 const poll = {
   question: 'What is your favourite programming language?',
   options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
@@ -194,3 +175,96 @@ const poll = {
 document
   .querySelector('.poll')
   .addEventListener('click', poll.registerNewAnswer.bind(poll));
+
+const bonusArray = {
+  answers: [5, 2, 3],
+};
+const bonusArray2 = {
+  answers: [1, 5, 3, 9, 6, 1],
+};
+console.log('---Called:---');
+poll.displayResults.call({ answers: [5, 2, 3] });
+poll.displayResults.call({ answers: [5, 2, 3] }, 'string');
+console.log('---Binded:-----');
+const display = poll.displayResults;
+const bindedBonusArray = display.bind(bonusArray);
+bindedBonusArray();
+
+//Immediately Invoked Function Expressions (IIFE) - functio nthat dissapears after it is called once
+//Put function expression or Arrow f in () and than call it with ();
+//Works cus ( f) inside brackets is in its own scope
+(function () {
+  console.log('Func expression :This will never call again!');
+  const isPrivate = 23;
+})();
+//console.log(isPrivate); //Reference error
+(() => console.log('Arrow f: This will never call again!'))();
+{
+  const isPrivate = 23;
+  var notPrivate = 46;
+}
+console.log(notPrivate); //var is accessible to outside
+//console.log(isPrivate);//Reference error
+
+//Closures
+//Any function always have access to the variable env of the execution context in which the function was created
+//Scope chain is preserved through closure (even though EC has been destroyed)
+//Closure has priority over scope chain
+const secureBooking = function () {
+  let passengerCount = 0;
+  return function () {
+    passengerCount++;
+    console.log(`${passengerCount} passengers`);
+  };
+};
+
+const booker = secureBooking();
+booker(); //1
+booker(); //2
+booker(); //3 - how does it update? -> Cannot be explained by scope chain alone, but also Closure
+//console.dir(booker); //[[Scopes/closure]]/ passengerCount =0; (everything in [[]] cant be accessed through code)
+
+//Closure- Example 1
+let f;
+const g = function () {
+  const a = 23;
+  console.log('a from G = ', a);
+  f = function () {
+    console.log(a * 2);
+  };
+};
+const h = function () {
+  const b = 777;
+  f = function () {
+    console.log('b from H =', b * 2);
+  };
+};
+g();
+f();
+//reassigning f
+h();
+f();
+console.dir(f);
+
+//Closure - Example 2 - Timer
+const boardPassengers = function (n, wait) {
+  const perGroup = n / 3;
+  setTimeout(function () {
+    console.log(`We are now boarding all ${n} passengers`);
+    console.log(`There are 3 groups, each with ${perGroup} passengers!`);
+  }, wait * 1000);
+
+  console.log(`Will start boarding in ${wait} seconds`);
+};
+
+const perGroup = 1000; //if scope would be prioritized before closure - >perGroup would be reassigned
+boardPassengers(180, 3);
+
+// Coding Challenge #2
+(function () {
+  const header = document.querySelector('h1');
+  header.style.color = 'red';
+  document.querySelector('body').addEventListener('click', function () {
+    header.style.color = 'blue';
+  });
+})();
