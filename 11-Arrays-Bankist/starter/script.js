@@ -124,3 +124,60 @@ const checkDogs = function (dogsJulia, dogsKate) {
 //const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+//Method - function attaced to an object
+//SIMPLE ARRAY METHODS (functions attached to array objects)
+//slice() -soes not mutate original array
+let arr = ['a', 'b', 'c', 'd', 'e'];
+arr.slice(2, 4);
+arr.slice(-2); //[d,e]
+arr.slice(1, -1); //[b,c]
+arr.slice(); // = shallow copy
+//splice() - mutates original array
+arr.splice(2, 4);
+console.log(arr); //[a,b]
+//reverse() - mutates original
+arr = ['a', 'b', 'c', 'd', 'e'];
+const arr2 = ['j', 'i', 'h', 'g', 'f'];
+arr2.reverse();
+console.log(arr2);
+//concat()
+const letters = arr.concat(arr2);
+console.log(letters); //['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
+console.log([...arr, ...arr2]);
+//join()
+console.log(letters.join('-')); //a-b-c-d-e-f-g-h-i-j
+//at()
+const arr3 = [23, 11, 64];
+console.log(arr3.at(0));
+//getting last element
+console.log(arr3[arr3.length - 1]);
+console.log(arr3.slice(-1)[0]);
+console.log(arr3.at(-1));
+console.log('Ramon'.at(-2));
+
+//FOREACH - is higher order f (requires clalback f)
+//foreach(currentElement, index, wholeArray) ; forEach - does not accept break !
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+movements.forEach(function (movement, i, array) {
+  movement > 0 && console.log(`You deposited ${movement + 1}`);
+  movement > 0 &&
+    console.log(`Movement  ${i + 1}: You withdrew ${Math.abs(movement)}`);
+});
+
+//ForEach - maps & sets
+const currencies = new Map([
+  ['USD', 'United States dollar'],
+  ['EUR', 'Euro'],
+  ['GBP', 'Pound sterling'],
+]);
+//map.forEach
+//forEach(curentValue, key, wholeMap)
+currencies.forEach(function (value, key, map) {
+  console.log(`${key}: ${value}`);
+});
+//set.forEach(currentValue, key (not used!!!), wholeSet)
+const currenciesUnique = new Set(['USD', 'GBP', 'EUR', 'USD', 'EUR']);
+currenciesUnique.forEach(function (value, key, map) {
+  console.log(`${key}: ${value}`); //USD:USD, GBP:GBP ....Sets do not have keys...
+});
