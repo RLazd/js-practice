@@ -148,7 +148,7 @@ PRIMITIVES vs OBJECTS
 
 */
 
-/*SCOPES
+//SCOPES
 function calcAge(birthYear) {
   const age = 2037 - birthYear;
   console.log(firstName); //does variable lookup
@@ -256,8 +256,6 @@ matilda.calcAgeObject(); //this = matilda obj ; returns 20
 const f = ram.calcAgeObject;
 f(); //undefined birthYear
 
-
-
 //REGULAR vs ARROW f
 //var firstName = 'Matilda';
 
@@ -304,12 +302,11 @@ const addExpr = function (a, b) {
 addExpr(2, 3);
 addExpr(2, 5, 8, 7);
 
-var addArrow = (a, b) => {
-  console.log(arguments); //arguments does not exist in arrow functions
-  return a + b;
-};
-addArrow(1, 2, 3);
-
+// var addArrow = (a, b) => {
+//   console.log(arguments); //arguments does not exist in arrow functions
+//   return a + b;
+// };
+// addArrow(1, 2, 3);
 
 //PRIMITIVES vs OBJECT
 //Primitives
@@ -346,4 +343,3 @@ jessicCopy.family.push('John');
 console.log('Before marriage: ', jessica2);
 console.log('After push-family: ', jessicCopy); //both objects have family with 4 fam members
 //to deep clone -> add external library!
-*/

@@ -1,7 +1,6 @@
 // Remember, we're gonna use strict mode in all scripts now!
 "use strict";
 
-// do not reload browser manually --> use LiveSaver
 console.log("Hello");
 //nodeJs to install LiveServer: npm install live-server -g
 //live server automatically opens index.html file
