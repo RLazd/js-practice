@@ -411,8 +411,7 @@ console.log(overalBalance2);
 const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
 console.log(owners.sort());
 console.log(owners);
-//Numbers - DOES sorting based on STRINGS
-console.log(movements);
+//Numbers - DOES sorting based on STRINGS;
 //console.log(movements.sort());
 
 //return <0 -> A,B (keep order)
@@ -430,3 +429,131 @@ movements.sort((a, b) => a - b);
 // });
 movements.sort((a, b) => b - a);
 console.log(movements);
+
+//FILL(what, startFrom, end) -mutates original
+const x = new Array(7); //Array with 7 empty elements !
+//console.log(x.map(() => 5)); //Does not work, but also no error
+//x.fill(1); //[1,1,1,1,1,1,1]
+x.fill(1, 3, 5);
+console.log(x);
+const arrFillExample = [1, 2, 3, 4, 5, 6, 7];
+console.log(arrFillExample.fill(23, 2, 6));
+
+//ARRAY.FROM(array-like-structure, callback function (mapping) ) -- introduced to make arrays from array-like structures
+const y = Array.from({ length: 7 }, () => 1); //[1,1,1,1,1,1,1]
+const z = Array.from({ length: 7 }, (_, i) => i + 1); //[1, 2, 3, 4, 5, 6, 7] (cur,i) == (_,i), ja neizmanto cur elementu
+
+const movementsUI = Array.from(document.querySelectorAll('.movements__value'));
+console.log(movementsUI);
+
+labelBalance.addEventListener('click', function () {
+  const movementsUI = Array.from(
+    document.querySelectorAll('.movements__value'), //node list is like an array like structure
+    el => Number(el.textContent.replace('€', ''))
+  );
+  console.log(movementsUI);
+  //console.log(movementsUI.map(el => Number(el.textContent.replace('€', ''))));
+  const movementsUI2 = [...document.querySelectorAll('.movements__value')]; //creates array, but mapping needed separately
+});
+
+//PRACTICE
+//1 - sum of all deposits in the bank
+const bankDepositsSum = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(bankDepositsSum);
+
+//2 -how many deposits in the bak over 1000eur
+const numDeposits1000 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (count, mov) => (mov >= 1000 ? ++count : count), //use ++ before, so it increases before returning
+    0
+  );
+console.log(numDeposits1000);
+// let a = 10;
+// console.log(a++);
+// console.log(a);
+
+//3 -
+const { deposits1, withdrawals1 } = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (sums, cur) => {
+      //cur > 0 ? (sums.deposits += cur) : (sums.withdrawals += cur);
+      sums[cur > 0 ? 'deposits' : 'withdrawals'] += cur;
+      return sums;
+    },
+    { deposits1: 0, withdrawals1: 0 } //starting point - object
+  );
+console.log(deposits1, withdrawals1);
+
+//4 -this is a nice title -> This is a Nice Title
+const convertTitleCase = function (title) {
+  const capitalize = str => str[0].toUpperCase().concat(str.slice(1));
+  const exceptions = ['a', 'an', 'and', 'the', 'but', 'or', 'on', 'in', 'with'];
+  const titleCase = title
+    .toLowerCase()
+    .split(' ')
+    .map(word =>
+      exceptions.includes(word)
+        ? word
+        : //word.slice(1).push(word[0].toUpperCase())
+          capitalize(word)
+    )
+    .join(' ');
+  return capitalize(titleCase);
+};
+console.log(convertTitleCase('this is a NICE title'));
+console.log(convertTitleCase('and this is a LONG title but NOt too Long'));
+
+//CHALLANGE 4
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] },
+];
+// 1
+dogs.forEach(dog => {
+  dog.recommended = Math.trunc(dog.weight ** 0.75 * 28);
+});
+console.log(dogs);
+// 2
+const sarahsDog = dogs
+  .filter(dog => dog.owners.includes('Sarah'))
+  .map(dog =>
+    dog.curFood > dog.recommended ? 'Eating too much' : 'Eating too little'
+  )
+  .join('');
+console.log(sarahsDog);
+//dog.curFood > dog.recommended * 0.9 && dog.curFood < dog.recommended*1.1
+// 3
+const ownersEatTooMuch = dogs
+  .filter(dog => dog.curFood > dog.recommended * 1.1)
+  .flatMap(dog => dog.owners);
+const ownersEatTooLittle = dogs
+  .filter(dog => dog.curFood < dog.recommended * 0.9)
+  .flatMap(dog => dog.owners);
+console.log(ownersEatTooMuch);
+console.log(ownersEatTooLittle);
+// 4
+const stringTooMuch = `${ownersEatTooMuch.join(' and ')}'s dogs eat too much!`;
+const stringTooLittle = `${ownersEatTooLittle.join(
+  ' and '
+)}'s dogs eat too little!`;
+console.log(stringTooMuch);
+console.log(stringTooLittle);
+// 5
+console.log(dogs.some(dog => dog.curFood === dog.recommended));
+// 6
+const okayFood = dog =>
+  dog.curFood > dog.recommended * 0.9 && dog.curFood < dog.recommended * 1.1;
+console.log(dogs.some(dog => okayFood(dog)));
+// 7
+const okayFoodDogs = dogs.filter(dog => okayFood(dog));
+console.log(okayFoodDogs);
+// 8
+const sortedDogs = dogs.slice().sort((a, b) => a.recommended - b.recommended);
+console.log(sortedDogs);
