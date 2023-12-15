@@ -200,7 +200,7 @@ const startLogOutTimer = function () {
   };
 
   // Set time to 5 minutes
-  let time = 30;
+  let time = 120;
 
   // Call the timer every second
   tick();
@@ -366,15 +366,15 @@ console.log('----LECTURES-----');
 console.log(23 === 23.0); //In JS all numbers have decimals
 //Numbers internally represented in 64bits
 //Base 10 - 0 to 9. 1/10 = 0.1. 3/10 = 3.3333...
-//Binary 2 - 0 1. Behind the scenes cant represetn certain fractions
+//Binary 2 - 0 1. Behind the scenes cant represent certain fractions
 console.log(0.1 + 0.2); //0.30000000000000004
 console.log(0.1 + 0.2 === 0.3); //false
 
-//Conversion: String --> Numbers
+//Conversion: String --> Numbers:  Number(), +
 console.log(Number('23'));
 console.log(+'23'); //does type coercion
 
-//Parsing
+//Parsing - Number.parseInt()
 console.log(Number.parseInt('30px', 10)); // Has to start with a number
 console.log(Number.parseInt('px30', 10)); //NAN
 console.log(Number.parseInt('01', 2)); //1 cus in Binary sytem
@@ -388,7 +388,7 @@ console.log(Number.isNaN('20')); //Is it not a number? --> false
 console.log(Number.isNaN(+'20X')); //Is it not a number? --> true
 console.log(Number.isNaN(20 / 0)); //Is it not a number? --> false (dividing by zero --> gives infinity)
 
-//Checkin if value is a number
+//Checkin if value is a number - Number.isFinite() ; Number.isInteger()
 console.log(Number.isFinite(20)); //true
 console.log(Number.isFinite('20')); //false
 console.log(Number.isFinite(+'20X')); //false
@@ -423,7 +423,7 @@ console.log(Math.ceil(23.4)); //24, UP
 console.log(Math.floor(23.6)); //24, DOWN
 console.log(Math.floor(-23.6)); //-24, DOWN
 
-//Rounding decimals
+//Rounding decimals - .toFixed();
 console.log((2.7).toFixed(0)); //3 (it is whire in console, cus its string)
 console.log((2.7).toFixed(3)); //2.700 (also string)
 console.log((2.345).toFixed(2)); //2.35 (also string)
