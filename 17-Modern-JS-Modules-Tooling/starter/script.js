@@ -1,7 +1,7 @@
 //
 // MODULES
 /* 
-Develpoment devided in modules also 3rd party packages (managed by npm = Node package manager, use cmd)
+Develpoment devided in modules also 3rd party packages (managed by npm = Node package manager, use cmd (software and ackage repository))
 1.Develpoment : multiple modules and 3rd party packages
 2.Build process: Bundling, Transpiling/polyfiling (convert back to ES5, usually done by Babel)
 3.Production (JS Bundle)
@@ -54,16 +54,18 @@ console.log(cart);
 // const data = await res.json();
 // console.log(data);
 
+/*
 const getLastPost = async function () {
   const res = await fetch('https://jsonplaceholder.typicode.com/posts');
   const data = await res.json();
   return { title: data.at(-1).title, text: data.at(-1).body };
 };
+*/
 // Old way
 //lastPost.then(res => console.log(res));
 
 // New - putside of async function
-const lastPost = await getLastPost(); //without await .then wont work, cus this returns Promise
+//const lastPost = await getLastPost(); //without await .then wont work, cus this returns Promise
 //console.log(lastPost);
 
 //
@@ -116,3 +118,55 @@ console.log(ShoppingCart2);
 // mv [filename] [loc] - parent folder = ../
 // rmdir - removedirectory (but empty)
 // rm -R [ folder] - ok for not empty dirs
+
+// !NPM
+/*
+Start by npm init => that will make package.json file
+
+npm i/install [package_name] -> will create add dpenedency in package.json && package-lock & node_modules (which include leaflet-lib code)
+
+Never include node_modules folder!
+
+npm i- will add all dependancies from package.json
+
+!PARCEL - module bundler
+build tool thats on npm too (Dev dependancy, used to develop project)
+Installing: npm i parcel --save-dev 
+Use it in cmd: 
+  npx parcel index.html
+  OR
+  execute usin npm scripts: in package.json
+
+Does not work for locally installed depandancies (use npx parcel [entrypoint]).
+Entrypoint - basically what you want to bundle up - here basically script.js (from html) -> shoppingCart.js, deepClone, 
++ when run starts a new development server
+
+In Parcel you can activate hot module replacement
+
+Install packages globally: 
+  npm i parcel -g
+*/
+
+//import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+import cloneDeep from 'lodash-es'; //Parcel finds path automatically, will work with common ES modules
+
+const state = {
+  cart: [
+    { product: 'bread', quantity: 5 },
+    { product: 'pizza', quantity: 5 },
+  ],
+  user: { loggedIn: true },
+};
+
+// Creating deep clone !
+const stateClone = Object.assign({}, state);
+const stateDeepClone = cloneDeep(state);
+state.user.loggedIn = false;
+console.log(stateClone); //changed to false, changes The Original
+console.log(stateDeepClone); //still true, keeps original values
+
+// Hot module replacement (only Parcel understand);
+// Whenever we re doing this -> new module inserted in browser without triggering new page reload
+if (module.hot) {
+  module.hot.accept();
+}
