@@ -170,3 +170,45 @@ console.log(stateDeepClone); //still true, keeps original values
 if (module.hot) {
   module.hot.accept();
 }
+
+// TRANSPILING, POLYFILLING
+/*
+lecture 280
+Parcel automatically uses Babel polyfilling,
+u can configure it, but default is mostly used
+
+@babel/present-env - include only final features
+*/
+
+class Person {
+  greeting = 'Hey';
+  constructor(name) {
+    this.name = name;
+    console.log(`${this.greeting}, ${this.name}`);
+  }
+}
+const jonas = new Person('Jonas');
+
+//ES6 methods - experimantl in babel --> its still not converted to ES5 as in the lecture)
+//Babelcan only transpile ES6 syntax (arrow, spread operator, const-> var), but not new features that are added to the language (methods- find...etc.) NOW it is working though, maybe new ones are not working
+/*
+TRANSPILING - for syntax (class to function, so it would work in older browsers)
+POLYFILLING - for built-in functions (for example at(), find() etc)
+
+*/
+
+console.log('Jonas' ?? null);
+console.log(cart.find(el => el.quantity >= 2));
+Promise.resolve('TEST').then(x => console.log(x));
+
+// NEW features have to polyfill -> add a library: import 'core-js/stable', but before install it manually npm i core-js
+import 'core-js/actual'; //THIS SHOULD BE ON TOP!!!
+//import 'core-js/stable/array/find' -> to include concrete features (allows to reduce bundle size)
+
+// Browserlist in package.json: => support for Internet Explorer 11
+
+// Polyfilling async functions
+import 'regenerator-runtime/runtime';
+
+//Review: Clean and Modern JS
+//Lets fix this code: clean.js
